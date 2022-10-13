@@ -1,10 +1,6 @@
 const clicker = document.querySelector(".clicker")
 const moneyText = document.querySelector(".moneyAmount")
 const multiplicatorText = document.querySelector(".multiplicatorAmount")
-const multiplicatorShop = document.querySelector(".multiplicatorShop")
-const multiplicatorPrice = document.querySelector(".multiplicatorShopPrice")
-const autoClickShop = document.querySelector(".autoClickShop")
-const autoClickShopPrice = document.querySelector(".autoClickShopPrice")
 const autoclickAmount = document.querySelector(".autoclickInterval")
 const info = document.querySelector(".info")
 const achievement = document.querySelector(".notif")
@@ -13,6 +9,23 @@ const shopMenu = document.querySelector(".shopMenu")
 const shopMenuIcon = document.querySelector(".shopping-svg")
 
 let money = 0;
+
+const miseAJourTexteArgent = () => {
+    moneyText.innerHTML = parseInt(money).toFixed(0);
+}
+
+const verifSauvegarde = () => {
+    
+    if (localStorage.getItem("money") !== null) {
+        money = parseInt(localStorage.getItem("money"));
+        miseAJourTexteArgent();
+    
+    } else {
+        localStorage.setItem("money", parseInt(money))
+    }
+}
+
+
 let clickMultiplicator = 1;
 let clickPerAutoClick = 0;
 let priceOfMultiplicator = 50;
@@ -24,9 +37,15 @@ let counterClick = 0
 let menuOpen = false;
 
 let shop = [
-    new ShopElement("Multiplicateur de clic", 250, 5, "fa-hand-pointer"),
-    new ShopElement("Amélioration de l'autoclicker", 250, 5, "fa-arrow-pointer")
+    new ShopElement("Multiplicateur de clic", 50, 4, "fa-hand-pointer", 0),
+    new ShopElement("Amélioration de l'autoclicker", 50, 2, "fa-arrow-pointer", 1)
 ]
+
+const saveProgress = () => {
+    console.log("saved progress")
+    localStorage.setItem("money", parseInt(money));
+    console.log(`money in localStorage : ${localStorage.getItem("money")}`)
+}
 
 const chargerShop = () => {
     shop.forEach(shopItem => {
@@ -47,8 +66,10 @@ const chargerShop = () => {
 
         // actual items in player pocket
         const actualContainer = document.createElement("p");
+        const actualNumber = document.createElement("span")
+        actualNumber.innerText = shopItem.level
         actualContainer.classList.add("actual")
-        const actualContainerText = document.createTextNode(`(Actuel : ${shopItem.level})`)
+        actualContainer.innerHTML = `(Actuel : <span>${shopItem.level}</span>)`
 
         // icon
         const icon = document.createElement("i");
@@ -59,24 +80,18 @@ const chargerShop = () => {
         const price = document.createElement("div")
         price.classList.add("price")
         const priceTextContainer = document.createElement("p")
-        const priceText = document.createTextNode(`${shopItem.price} 💸`)
+        priceTextContainer.innerHTML = `<span>${shopItem.price}</span> 💸`
 
         shopMenu.appendChild(contentAndPrice);
         contentAndPrice.appendChild(content);
         content.appendChild(nameOfContent);
         nameOfContentTextContainer.appendChild(nameOfContentText)
         nameOfContent.appendChild(nameOfContentTextContainer);
-        actualContainer.appendChild(actualContainerText);
         content.appendChild(actualContainer);
         nameOfContent.appendChild(icon);
         contentAndPrice.appendChild(price);
-        priceTextContainer.appendChild(priceText);
         price.appendChild(priceTextContainer);
     });
-}
-
-const miseAJourTexteArgent = () => {
-    moneyText.innerHTML = money.toFixed(0);
 }
 
 const miseAJourTexteMultiplicator = () => {
@@ -87,6 +102,15 @@ const miseAJourTexteMultiplicator = () => {
 const miseAJourTexteAutoClick = () => {
     autoClickShopPrice.innerHTML = priceOfAutoClick;
     autoclickAmount.innerHTML = clickPerAutoClick;
+}
+
+const miseAJourShop = (shopItems) => {
+    for (let i = 0; i < shop.length; i++) {
+        // Mise à jour du texte "(Actuel : ...)"
+        shopItems[i].children[0].children[1].children[0].innerText = shop[i].level;
+        // Mise à jour du montant du shopitem
+        shopItems[i].children[1].children[0].children[0].innerText = shop[i].price;
+    }
 }
 
 const doAClick = () => {
@@ -113,11 +137,11 @@ const afficherOuEnleverInfo = (isAfficher, message) => {
     }
 }
 
-const addMultiplicator = () => {
-    if (money >= priceOfMultiplicator) {
+const addMultiplicator = (item) => {
+    if (money >= item.price) {
         clickMultiplicator *= 2;
-        money -= priceOfMultiplicator;
-        priceOfMultiplicator *= 5;
+        money -= item.price;
+        item.gainLevel();
         miseAJourTexteMultiplicator();
         miseAJourTexteArgent();
     } else {
@@ -127,11 +151,11 @@ const addMultiplicator = () => {
     
 }
 
-const addAutoClick = () => {
-    if (money >= priceOfAutoClick) {
-        money -= priceOfAutoClick
+const addAutoClick = (item) => {
+    if (money >= item.price) {
+        money -= item.price
         miseAJourTexteArgent();
-        priceOfAutoClick *= 5;
+        item.gainLevel();
         if (clickPerAutoClick !== 0) {
             clickPerAutoClick *= 2;
         } else {
@@ -165,9 +189,36 @@ const openShop = () => {
     }
 }
 
+const determineShopObject = (item, shopItems) => {
+    switch (item.category) {
+        case 0: // Click multiplier
+            addMultiplicator(item);
+            
+            break;
+        case 1:
+            addAutoClick(item)
+            break;
+        default:
+            break;
+    }
+    miseAJourShop(shopItems)
+}
+
+const addEventListenerToShopObjects = () => {
+    const shopItems = document.querySelectorAll(".content-and-price")
+    for (let i = 0; i < shopItems.length; i++) {
+        shopItems[i].addEventListener("click", function(){determineShopObject(shop[i], shopItems)})
+    }
+    miseAJourShop(shopItems)
+    
+}
+
 clicker.addEventListener("click", doAClick);
-multiplicatorShop.addEventListener("click", addMultiplicator);
-autoClickShop.addEventListener("click", addAutoClick);
-closeCross.addEventListener("click", closeModal)
-shopMenuIcon.addEventListener("click", openShop)
-chargerShop()
+closeCross.addEventListener("click", closeModal);
+shopMenuIcon.addEventListener("click", openShop);
+chargerShop();
+addEventListenerToShopObjects();
+
+
+/* Save system - NOT IMPLEMENTED
+setInterval(saveProgress, 30000); */
