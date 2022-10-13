@@ -6,7 +6,7 @@ const info = document.querySelector(".info")
 const achievement = document.querySelector(".notif")
 const closeCross = document.querySelector(".cross")
 const shopMenu = document.querySelector(".shopMenu")
-const shopMenuIcon = document.querySelector(".shopping-svg")
+const shopMenuIcon = document.querySelector(".shop-svg")
 
 let money = 0;
 
@@ -96,11 +96,9 @@ const chargerShop = () => {
 
 const miseAJourTexteMultiplicator = () => {
     multiplicatorText.innerHTML =  clickMultiplicator
-    multiplicatorPrice.innerHTML = priceOfMultiplicator
 }
 
 const miseAJourTexteAutoClick = () => {
-    autoClickShopPrice.innerHTML = priceOfAutoClick;
     autoclickAmount.innerHTML = clickPerAutoClick;
 }
 
@@ -179,11 +177,11 @@ const closeModal = () => {
 
 const openShop = () => {
     if (!menuOpen) {
-        shopMenuIcon.classList.add("shopping-svg-active");
+        shopMenuIcon.classList.add("shop-svg-active");
         shopMenu.style.display = "initial";
         menuOpen = true;
     } else {
-        shopMenuIcon.classList.remove("shopping-svg-active");
+        shopMenuIcon.classList.remove("shop-svg-active");
         shopMenu.style.display = "none";
         menuOpen = false;
     }
