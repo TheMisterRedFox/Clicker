@@ -14,8 +14,11 @@
 - Premier prototype de boutique (icône en haut à droite)
 - Premier prototype d'achievement/succès (Possible de le voir quand on clique 10 fois 🖱️
 
+### V0.6 :
+ - 🛒 Nouveau système de shop, disponible avec l'icône en haut à droite (le petit 🛒)
+ - Retrait de l'ancien shop ❌
+
 ### **A venir 🔜**
-- Système de boutique fonctionnelle (remplacement du système actuel)
 - Système d'achievement + progression
 - Système de sauvegarde
 
