@@ -25,6 +25,7 @@ main .clicker {
     font-size: 25px;
     cursor: pointer;
     transition: ease-in-out 0.1s;
+    border: 1px solid black;
 }
 
 main p, main button {
@@ -34,7 +35,7 @@ main p, main button {
 .clicker:hover {
 transform: scale(1.1);
 background-position: -60px;
-box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+box-shadow: 3px 3px 0px rgba(0,0,0,0.16)
 }
 
 .clicker:active {
@@ -92,7 +93,7 @@ box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 
 .shop-svg {
     color: grey;
-    font-size: 3vw;
+    font-size: 3rem;
     position: absolute;
     top: 25px;
     right: 25px;
@@ -164,6 +165,7 @@ box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
     overflow: hidden;
     transition: 0.2s ease-in-out;
     cursor: pointer;
+    border: 1px solid #ffffff26;
 }
 
 .content-and-price:hover {
