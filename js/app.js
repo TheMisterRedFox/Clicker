@@ -37,8 +37,8 @@ let counterClick = 0
 let menuOpen = false;
 
 let shop = [
-    new ShopElement("Multiplicateur de clic", 50, 4, "fa-hand-pointer", 0),
-    new ShopElement("Amélioration de l'autoclicker", 50, 2, "fa-arrow-pointer", 1)
+    new ShopElement("Multiplicateur de clic", 50, 4, "fa-hand-pointer", Category.ClickMultiplier),
+    new ShopElement("Amélioration de l'autoclicker", 50, 2, "fa-arrow-pointer", Category.AutoclickerMultiplier)
 ]
 
 const saveProgress = () => {
@@ -111,13 +111,19 @@ const miseAJourShop = (shopItems) => {
     }
 }
 
+const handleAchievements = () => {
+    achievements.forEach(acm => {
+        if(acm.isAchieve()){
+            $(".notifBox").append(acm.jqElement);
+        }
+    });
+}
+
 const doAClick = () => {
     money += clickMultiplicator
     miseAJourTexteArgent();
-    counterClick++
-    if (counterClick === 10) {
-        achievement.style.display = "initial";
-    }
+    counterClick++;
+    handleAchievements();
         
 }
 
@@ -171,10 +177,6 @@ const addAutoClick = (item) => {
 
 }
 
-const closeModal = () => {
-    achievement.style = "display:none;";
-}
-
 const openShop = () => {
     if (!menuOpen) {
         shopMenuIcon.classList.add("shop-svg-active");
@@ -211,8 +213,7 @@ const addEventListenerToShopObjects = () => {
     
 }
 
-clicker.addEventListener("click", doAClick);
-closeCross.addEventListener("click", closeModal);
+clicker.addEventListener("mousedown", doAClick);
 shopMenuIcon.addEventListener("click", openShop);
 chargerShop();
 addEventListenerToShopObjects();

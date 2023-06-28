@@ -55,16 +55,21 @@ box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
     font-size: 30px;
 }
 
+.notifBox {
+    display:flex;
+    flex-direction: column;
+    position: absolute;
+    top: 25px;
+    left: 25px;
+}
+
 .notif {
     color: rgb(0, 0, 0);
     background: linear-gradient(#ffd95a,#ffd45d);
     padding: 10px 25px;
+    margin-bottom: 15px;
     font-size: 25px;
-    position: absolute;
-    top: 25px;
-    left: 25px;
     box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
-    display: none;
     transition: transform 280ms ease-out;
 }
 

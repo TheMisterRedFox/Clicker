@@ -4,9 +4,7 @@ class ShopElement {
         this.price = price;
         this.multiplicatorAtEachLevel = multiplicatorAtEachLevel;
         this.icon = icon
-        this.category = category // 0 -> Clic multiplier
-                                 // 1 -> Autoclicker upgrade
-
+        this.category = category 
     }
 
     // level of shop element at start
