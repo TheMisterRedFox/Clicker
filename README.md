@@ -18,7 +18,13 @@
  - 🛒 Nouveau système de shop, disponible avec l'icône en haut à droite (le petit 🛒)
  - Retrait de l'ancien shop ❌
 
+### V0.7 :
+ - 🏆 Découvrez le nouveau système d'achievements (trophées/succès) !
+   - D'autres achievements sont à venir. Ici, dans cette M.A.J, il ne s'agit que de l'implémentation du système fonctionnel.
+
 ### **A venir 🔜**
-- Système d'achievement + progression
+- Plus d'achievements
+- Un tableau d'achievement/centre de notifications
+- Système de progression
 - Système de sauvegarde
 
