@@ -9,9 +9,51 @@ const shopMenu = document.querySelector(".shopMenu")
 const shopMenuIcon = document.querySelector(".shop-svg")
 
 let money = 0;
+let clickMultiplicator = 1;
+let clickPerAutoClick = 0;
+let priceOfMultiplicator = 50;
+let priceOfAutoClick = 50;
+let interval = 1000;
+let autoClickActive = false;
+let toFixedActuel = 2;
+let counterClick = 0
+let menuOpen = false;
 
+/**
+ * Permet d'obtenir l'affichage en fonction de l'argent du joueur.
+ * Par exemple, 1 000 000 se transforme en "1 million"
+ */
+const getAffichageMoney = (mny) => {
+
+    let moneyString;
+
+    if(mny >= 1000000000000000000000000) {
+        moneyString = `${parseFloat(mny / 1000000000000000000000000).toFixed(2)} septillions`
+    } else if(mny >= 1000000000000000000000) {
+        moneyString = `${parseFloat(mny / 1000000000000000000000).toFixed(2)} sextillions`
+    } else if(mny >= 1000000000000000000) {
+        moneyString = `${parseFloat(mny / 1000000000000000000).toFixed(2)} quintillions`
+    } else if(mny >= 1000000000000000) {
+        moneyString = `${parseFloat(mny / 1000000000000000).toFixed(2)} quadrillions`
+    } else if(mny >= 1000000000000) {
+        moneyString = `${parseFloat(mny / 1000000000000).toFixed(2)} trilliards`
+    } else if(mny >= 1000000000) {
+        moneyString = `${parseFloat(mny / 1000000000).toFixed(2)} milliards`
+    } else if(mny >= 1000000){
+        moneyString = `${parseFloat(mny / 1000000).toFixed(2)} millions`
+    } else {
+        return parseInt(mny).toFixed(0)
+    }
+
+    return moneyString
+}
+
+/**
+ * Modifie l'affichage de l'argent pour mettre la money courante.
+ */
 const miseAJourTexteArgent = () => {
-    moneyText.innerHTML = parseInt(money).toFixed(0);
+
+    moneyText.innerText = getAffichageMoney(money);
 }
 
 const verifSauvegarde = () => {
@@ -24,22 +66,6 @@ const verifSauvegarde = () => {
         localStorage.setItem("money", parseInt(money))
     }
 }
-
-
-let clickMultiplicator = 1;
-let clickPerAutoClick = 0;
-let priceOfMultiplicator = 50;
-let priceOfAutoClick = 50;
-let interval = 1000;
-let autoClickActive = false;
-let toFixedActuel = 2;
-let counterClick = 0
-let menuOpen = false;
-
-let shop = [
-    new ShopElement("Multiplicateur de clic", 50, 4, "fa-hand-pointer", Category.ClickMultiplier),
-    new ShopElement("Amélioration de l'autoclicker", 50, 2, "fa-arrow-pointer", Category.AutoclickerMultiplier)
-]
 
 const saveProgress = () => {
     console.log("saved progress")
@@ -80,7 +106,7 @@ const chargerShop = () => {
         const price = document.createElement("div")
         price.classList.add("price")
         const priceTextContainer = document.createElement("p")
-        priceTextContainer.innerHTML = `<span>${shopItem.price}</span> 💸`
+        priceTextContainer.innerHTML = `<span>${getAffichageMoney(shopItem.price)}</span> 💸`
 
         shopMenu.appendChild(contentAndPrice);
         contentAndPrice.appendChild(content);
@@ -95,11 +121,11 @@ const chargerShop = () => {
 }
 
 const miseAJourTexteMultiplicator = () => {
-    multiplicatorText.innerHTML =  clickMultiplicator
+    multiplicatorText.innerText = clickMultiplicator
 }
 
 const miseAJourTexteAutoClick = () => {
-    autoclickAmount.innerHTML = clickPerAutoClick;
+    autoclickAmount.innerText = clickPerAutoClick;
 }
 
 const miseAJourShop = (shopItems) => {
@@ -107,7 +133,7 @@ const miseAJourShop = (shopItems) => {
         // Mise à jour du texte "(Actuel : ...)"
         shopItems[i].children[0].children[1].children[0].innerText = shop[i].level;
         // Mise à jour du montant du shopitem
-        shopItems[i].children[1].children[0].children[0].innerText = shop[i].price;
+        shopItems[i].children[1].children[0].children[0].innerText = getAffichageMoney(shop[i].price);
     }
 }
 
