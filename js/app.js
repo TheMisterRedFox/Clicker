@@ -23,7 +23,7 @@ let menuOpen = false;
  * Permet d'obtenir l'affichage en fonction de l'argent du joueur.
  * Par exemple, 1 000 000 se transforme en "1 million"
  */
-const getAffichageMoney = (mny) => {
+const getAffichageMoney = (mny, isFloat) => {
 
     let moneyString;
 
@@ -41,8 +41,10 @@ const getAffichageMoney = (mny) => {
         moneyString = `${parseFloat(mny / 1000000000).toFixed(2)} milliards`
     } else if(mny >= 1000000){
         moneyString = `${parseFloat(mny / 1000000).toFixed(2)} millions`
+    } else if(isFloat) {
+        moneyString = parseFloat(mny).toFixed(2)
     } else {
-        return parseInt(mny).toFixed(0)
+        moneyString = parseInt(mny).toFixed(0)
     }
 
     return moneyString
@@ -53,7 +55,7 @@ const getAffichageMoney = (mny) => {
  */
 const miseAJourTexteArgent = () => {
 
-    moneyText.innerText = getAffichageMoney(money);
+    moneyText.innerText = getAffichageMoney(money, false);
 }
 
 const verifSauvegarde = () => {
@@ -106,7 +108,7 @@ const chargerShop = () => {
         const price = document.createElement("div")
         price.classList.add("price")
         const priceTextContainer = document.createElement("p")
-        priceTextContainer.innerHTML = `<span>${getAffichageMoney(shopItem.price)}</span> 💸`
+        priceTextContainer.innerHTML = `<span>${getAffichageMoney(shopItem.price, false)}</span> 💸`
 
         shopMenu.appendChild(contentAndPrice);
         contentAndPrice.appendChild(content);
@@ -125,7 +127,7 @@ const miseAJourTexteMultiplicator = () => {
 }
 
 const miseAJourTexteAutoClick = () => {
-    autoclickAmount.innerText = clickPerAutoClick;
+    autoclickAmount.innerText = getAffichageMoney(clickPerAutoClick, true);
 }
 
 const miseAJourShop = (shopItems) => {
